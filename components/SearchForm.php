@@ -1,12 +1,12 @@
-<?php namespace PKleindienst\BlogSearch\Components;
+<?php namespace JZ\BlogSearch\Components;
 
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Page;
-use RainLab\Blog\Models\Category as BlogCategory;
+use Winter\Blog\Models\Category as BlogCategory;
 
 /**
  * Search Form Component
- * @package PKleindienst\BlogSearch\Components
+ * @package JZ\BlogSearch\Components
  */
 class SearchForm extends ComponentBase
 {

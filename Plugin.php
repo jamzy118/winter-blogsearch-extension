@@ -1,4 +1,4 @@
-<?php namespace PKleindienst\BlogSearch;
+<?php namespace JZ\BlogSearch;
 
 use System\Classes\PluginBase;
 
@@ -10,7 +10,7 @@ class Plugin extends PluginBase
     /**
      * @var array Plugin dependencies
      */
-    public $require = ['RainLab.Blog'];
+    public $require = ['Winter.Blog'];
 
     /**
      * Returns information about this plugin.
@@ -34,8 +34,8 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'PKleindienst\BlogSearch\Components\SearchForm'   => 'searchForm',
-            'PKleindienst\BlogSearch\Components\SearchResult' => 'searchResult'
+            'JZ\BlogSearch\Components\SearchForm'   => 'searchForm',
+            'JZ\BlogSearch\Components\SearchResult' => 'searchResult'
         ];
     }
 

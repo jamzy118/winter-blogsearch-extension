@@ -1,17 +1,17 @@
-<?php namespace PKleindienst\BlogSearch\Components;
+<?php namespace JZ\BlogSearch\Components;
 
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Page;
 use Input;
-use RainLab\Blog\Models\Category as BlogCategory;
-use RainLab\Blog\Models\Post as BlogPost;
+use Winter\Blog\Models\Category as BlogCategory;
+use Winter\Blog\Models\Post as BlogPost;
 use Redirect;
 // use System\Models\Parameters;
 
 /**
  * Search Result component
- * @see RainLab\Blog\Components\Posts
- * @package PKleindienst\BlogSearch\Components
+ * @see Winter\Blog\Components\Posts
+ * @package JZ\BlogSearch\Components
  */
 class SearchResult extends ComponentBase
 {
@@ -211,6 +211,11 @@ class SearchResult extends ComponentBase
 
         // map get request to :search param
         $searchTerm = Input::get('search');
+        if(strlen($searchTerm) < 3) {
+            $this->page['posts'] = [];
+            $this->page['searchError'] = trans('jz.blogsearch::lang.messages.toLittleCharacters');
+            return;
+        }
         if (!$this->property('disableUrlMapping') && \Request::isMethod('get') && $searchTerm) {
             // add ?cats[] query string
             $cats = Input::get('cat');
@@ -228,7 +233,9 @@ class SearchResult extends ComponentBase
 
         // load posts
         $this->posts = $this->page[ 'posts' ] = $this->listPosts();
-
+        if($this->posts->count() == 0) {
+            $this->page['searchError'] = trans('jz.blogsearch::lang.messages.noResults');
+        }
         /*
          * If the page number is not valid, redirect
          */
@@ -274,7 +281,7 @@ class SearchResult extends ComponentBase
                 ->orWhere('content', 'LIKE', "%{$this->searchTerm}%")
                 ->orWhere('excerpt', 'LIKE', "%{$this->searchTerm}%");
         });
-        
+
         if (!is_null($this->property('includeCategories'))) {
             $posts = $posts->whereHas('categories', function ($q) {
                 $q->whereIn('id', $this->property('includeCategories'));
